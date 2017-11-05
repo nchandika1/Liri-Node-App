@@ -16,7 +16,7 @@ var spotifyKeys = {
 }
 
 var oMDbAccessKey = {
-
+	accessKey: '40e9cece'
 }
 
 module.exports = { 

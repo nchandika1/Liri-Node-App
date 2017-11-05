@@ -90,7 +90,8 @@ function spotifyThisSong(song) {
 }
 
 function movieThis(movie) {
-	var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=40e9cece";
+	var accessKey = keys.oMDbAccessKey.accessKey;
+	var queryURL = "http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=" + accessKey;
 	request(queryURL, function(err, response, body){
 		if (err) {
 			console.log("OMDB Error: " + err);
