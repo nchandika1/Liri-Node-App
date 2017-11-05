@@ -5,6 +5,17 @@ var Spotify = require("node-spotify-api");
 var request = require("request");
 var fs = require("fs");
 
+function logOutput(str) {
+	var fileName = "log.txt";
+	// Take the input string and append it to log.txt file
+	// Also add an additional line in between different logs (style)
+	fs.appendFile(fileName, str + "--------\n", function(err) {
+		if (err) {
+			console.log("Log to file failed! - " + err);
+		}
+	});
+}
+
 function myTweets(tweet) {
 	var twitterKeys = keys.twitterKeys;
 	var client = new Twitter({
@@ -23,17 +34,18 @@ function myTweets(tweet) {
 	client.get('search/tweets', params, function(error, tweets, response) {
 		if (error) {
 			console.log("Error: " + error);
+			logOutput("Error: " + error + "\n");
 			return;
 		}
-		if (response.successCode != 200) {
-			console.log("Failled - Twitter Response Code: " + response.successCode);
-		}
+
+		var logStr = ""; // Save the output to this string and display it on console and append to log.txt
 
 		for (var i=0; i< tweets.statuses.length; i++) {
-			console.log(tweets.statuses[i].created_at);
-			console.log(tweets.statuses[i].text);
-			console.log();
+			logStr = logStr+tweets.statuses[i].created_at+'\n';
+			logStr = logStr+tweets.statuses[i].text+'\n';
 		}
+		console.log(logStr);
+		logOutput(logStr);
 	});
 }
 
@@ -52,21 +64,27 @@ function spotifyThisSong(song) {
 
 	spotify.search(params, function(err, data) {
 	  	if (err) {
-	    	return console.log('Error occurred: ' + err);
+	    	console.log('Error occurred: ' + err);
+	    	logOutput('Error occurred: ' + err + '\n');
+	    	return;
 	  	}
 
 		for (var i = 0; i<data.tracks.items.length; i++) {
+			var logStr = ""; // Save the output to this string and display it on console and append to log.txt
+
 			var songItem = data.tracks.items[i];
-			console.log("Song: " + songItem.name);
-			console.log("Album: " + songItem.album.name);
+			logStr = logStr+"Song: " + songItem.name+'\n';
+			logStr = logStr+"Album: " + songItem.album.name+'\n';
 			var len = songItem.album.artists.length;
 			var artists = "";
 			for (var j=0; j < len; j++) {
 				artists = artists + songItem.album.artists[j].name + ' ';
 			}
-			console.log("Artist(s): " + artists.trim());
-			console.log("Preview Link: " + songItem.preview_url);
-			console.log();
+			logStr = logStr+"Artist(s): " + artists.trim()+'\n';
+			logStr = logStr+"Preview Link: " + songItem.preview_url+'\n';
+			
+			console.log(logStr);
+			logOutput(logStr);
 		}
 	});
 }
@@ -76,35 +94,41 @@ function movieThis(movie) {
 	request(queryURL, function(err, response, body){
 		if (err) {
 			console.log("OMDB Error: " + err);
+			logOutput("OMDB Error: " + err+'\n');
 			return;
 		}
 		if (response.statusCode != 200) {
 			console.log("Failed - OMDb Response Code: " + response.statusCode);
+			logOutput("Failed - OMDb Response Code: " + response.statusCode+'\n');
 			return;
 		}
 
+		var logStr = ""; // Save the output to this string and display it on console and append to log.txt
 		var result = JSON.parse(body);
-		console.log("Title: " + result.Title);
-		console.log("Year: " + result.Year);
+		logStr = logStr+"Title: " + result.Title+'\n';
+		logStr = logStr+"Year: " + result.Year+'\n';
+
 		if (result.Ratings.length == 0) {
-			console.log("Internet Movie Database Rating: Not Available");
-			console.log("Rotten Tomatoes Rating: Not Available");	
+			logStr = logStr+"Internet Movie Database Rating: Not Available"+'\n';
+			logStr = logStr+"Rotten Tomatoes Rating: Not Available"+'\n';
 		}
 
 		if (result.Ratings.length == 1) {
-			console.log("Internet Movie Database Rating: " + result.Ratings[0].Value);
-			console.log("Rotten Tomatoes Rating: Not Available");	
+			logStr = logStr+"Internet Movie Database Rating: " + result.Ratings[0].Value+'\n';
+			logStr = logStr+"Rotten Tomatoes Rating: Not Available"+'\n';	
 		}
 
 		if (result.Ratings.length == 2) {
-			console.log("Internet Movie Database Rating: " + result.Ratings[1].Value);
-			console.log("Rotten Tomatoes Rating: " + result.Ratings[1].Value);	
+			logStr = logStr+"Internet Movie Database Rating: " + result.Ratings[0].Value+'\n';
+			logStr = logStr+"Rotten Tomatoes Rating: " + result.Ratings[1].Value+'\n';
 		}
 		
-		console.log("Country: " + result.Country);
-		console.log("Language: " + result.Language);
-		console.log("Plot: " + result.Plot);
-		console.log("Actors: " + result.Actors);
+		logStr = logStr+"Country: " + result.Country+'\n';
+		logStr = logStr+"Language: " + result.Language+'\n';
+		logStr = logStr+"Plot: " + result.Plot+'\n';
+		logStr = logStr+"Actors: " + result.Actors+'\n';
+		console.log(logStr);
+		logOutput(logStr);
 	});
 }
 

@@ -74,6 +74,8 @@ Make it so liri.js can take in one of the following commands:
 ### Additions
 
 * Everytime a command is run, the output is logged to `log.txt` file.
+* If the file doesn't exist then a file with that name is created.
+* Each log is appended to the file.
 
 ## Copyright
 
