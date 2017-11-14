@@ -1,0 +1,24 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "Language Interpreter and Recognition Interface",
+  "main": "liri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nchandika1/Liri-Node-App.git"
+  },
+  "author": "Nagarani Chandika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nchandika1/Liri-Node-App/issues"
+  },
+  "homepage": "https://github.com/nchandika1/Liri-Node-App#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.0.7",
+    "request": "^2.83.0",
+    "twitter": "^1.7.1"
+  }
+}
